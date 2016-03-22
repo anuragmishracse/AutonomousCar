@@ -1,0 +1,71 @@
+<html>
+<head>
+<script src="jquery-1.9.1.min.js"></script>
+<script type="text/JavaScript">
+var url = "http://raspberrypi.local/track.jpg"; //url to load image from
+var refreshInterval = 50; //in ms
+var img;
+var value = 5;
+
+function init() {
+    var canvas = document.getElementById("canvas");
+    var context = canvas.getContext("2d");
+    img = new Image();
+    img.onload = function() {
+        canvas.setAttribute("width", img.width*3)
+        canvas.setAttribute("height", img.height*3)
+	$(function() {
+            $.get('decision.txt', function(data) {
+            	$('#dec').html(data);
+     	     });
+	});
+	//document.getElementById("dec").innerHTML="Hullo".concat(value.toString());
+	//value+=1;
+        context.drawImage(this, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.height);	
+	}
+    refresh();
+}
+function refresh()
+{
+    img.src = url + "?t=" + new Date().getTime();
+    setTimeout("refresh()",refreshInterval);
+}
+
+</script>
+<title>Anurag's Car</title>		
+<style>
+html{
+    background: url(bg.png) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+body {
+    color: orange;
+    font-size: 250%;
+    text-align: center;
+}
+canvas {
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin:auto;
+}
+h1 {
+    color: yellow;
+    text-align: center;
+}
+</style>
+</head>
+
+<h1>Anurag's autonomous car</h1>
+
+<body onload="JavaScript:init();">
+<div id="dec">
+</div>
+<canvas id="canvas"/>
+</body>
+</html>
